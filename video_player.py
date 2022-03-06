@@ -9,8 +9,6 @@ from enum import Enum
 import PySimpleGUI as sg
 from animated_image import AnimatedImage
 
-IMAGES = Path('./images')
-
 
 class BeaconSpeed(Enum):
     """Map beacon cycle speeds to the APNG files that implement them"""
@@ -35,7 +33,8 @@ effects = {
 
 
 class VideoPlayer:
-    def __init__(self):
+    def __init__(self, images_folder: Path):
+        self._folder = images_folder
         self._beacon_ani: AnimatedImage | None = None
         self._box_ani: AnimatedImage | None = None
 
@@ -48,11 +47,11 @@ class VideoPlayer:
         box_file, beacon_speed = effects.get(effect_name, (None, None))
 
         if beacon_speed:
-            file_path = IMAGES / (beacon_speed.value + '.png')
+            file_path = self._folder / (beacon_speed.value + '.png')
             self._beacon_ani.load(file_path).start()
 
         if box_file:
-            file_path = IMAGES / (box_file + '.png')
+            file_path = self._folder / (box_file + '.png')
             self._box_ani.load(file_path).start()
 
     def run(self):

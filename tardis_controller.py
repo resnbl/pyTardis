@@ -13,10 +13,10 @@ INIT_VOL = AudioPlayer.INIT_VOL
 
 class TardisController:
     """TARDIS audio/visual controller"""
-    def __init__(self):
+    def __init__(self, audio_path, images_path):
         self._trk_idx = 0
-        self._audio = AudioPlayer()
-        self._video = VideoPlayer()
+        self._audio = AudioPlayer(audio_path)
+        self._video = VideoPlayer(images_path)
         self.duration = 0
 
     def set_images(self, beacon: sg.Image, box: sg.Image):

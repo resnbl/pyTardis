@@ -26,6 +26,9 @@ PLAY_BTN = str(IMAGES / 'btn_play.png')
 PAUSE_BTN = str(IMAGES / 'btn_stop.png')
 EXIT_BTN = str(IMAGES / 'btn_power_ani.png')    # 'btn_stop_ani.png')
 
+# and all the lovely tunes...
+AUDIO = Path(__file__).parent / 'audio'
+
 # widget keys
 LIST_KEY = '-LIST-'
 PLAY_KEY = '-PLAY-'
@@ -94,7 +97,7 @@ def make_layout(names: list[str]) -> list[list]:
 
 def main():
     """Main program with event loop"""
-    tc = TardisController()
+    tc = TardisController(AUDIO, IMAGES)
     # init our window
     layout = make_layout(tc.titles)
     window = sg.Window(title=IDLE_TITLE, layout=layout, font=THE_FONT, icon=TARDIS_ICON, finalize=True)
