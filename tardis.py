@@ -201,13 +201,4 @@ def main():
 
 if __name__ == '__main__':
     print('Tardis', __version__)
-    if '-v' in sys.argv or '--version' in sys.argv:
-        print('  Using:')
-        print(f'  {sg.port} {sg.version}')
-        from PIL import __version__ as pil_version
-        print(f'  PIL {pil_version}')
-        from vlc import __version__ as vlc_version
-        print(f'  VLC {vlc_version}')
-        exit()
-
     main()
