@@ -3,7 +3,6 @@ Main TARDIS script - see README.MD for an overview of how and why this exists.
 """
 __version__ = '1.0.0'
 
-import sys
 from pathlib import Path
 import base64
 import PySimpleGUI as sg
