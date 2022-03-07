@@ -143,7 +143,7 @@ def main():
             else:               # then get started!
                 title_duration = tc.play()
                 window.set_title(title_duration)
-                eprint(title_duration)
+                # eprint(title_duration)
                 scroll_to = max(0, tc.track_index - 2)      # center selection (unless at #0 or #1)
                 track_list.update(set_to_index=tc.track_index, scroll_to_index=scroll_to)
                 play_btn.update(image_filename=PAUSE_BTN)   # toggle play -> stop
@@ -182,13 +182,14 @@ def main():
     # end event loop
 
     if event == EXIT_KEY:       # only if leaving via EXIT button
-        # But wait! We've got a big finish! (flash animated buttons)
+        # But wait! We've got a big finish! (flash animated buttons & alter Tardis image)
         ani_next.start()
         ani_prev.start()
         ani_exit = AnimatedImage(window[EXIT_KEY], EXIT_BTN).start()
+        window.set_title(tc.on_close())
         while window.read(10)[0] == TIMEOUT_KEY:
             # These animations all have loop==1, so this doesn't last long
-            if not(ani_exit.running or ani_next.running or ani_prev.running):
+            if not(ani_exit.running or ani_next.running or ani_prev.running or tc.is_playing):
                 break   # now we can die...
             ani_next.run()
             ani_prev.run()

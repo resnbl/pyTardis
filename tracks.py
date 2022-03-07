@@ -42,3 +42,5 @@ TRACKS: list[TrackInfo] = [
     TrackInfo(18, "That does very very complicated", "redGreenEffect"),
     TrackInfo(20, "Cloister bell", "flickerEfffect")
 ]
+
+CLOSE_EFFECT = TrackInfo(999, "You blinked!", "angelEffect")

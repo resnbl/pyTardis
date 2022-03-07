@@ -28,7 +28,8 @@ effects = {
     'heartBeatEffect': ('orange_beat', BeaconSpeed.NORMAL),
     'tardisTakeoff': ('blue_roll', BeaconSpeed.NORMAL),
     'beat8Effect': ('blue_fade_up', BeaconSpeed.FAST),
-    'basicPalEffect': ('palette', BeaconSpeed.NORMAL)
+    'basicPalEffect': ('palette', BeaconSpeed.NORMAL),
+    'angelEffect': ('box_angel', BeaconSpeed.FAST)
 }
 
 

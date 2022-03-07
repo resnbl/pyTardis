@@ -37,7 +37,7 @@ I ended up using the `python-vlc` package since I already had
 the VLC player installed on my machine, and was able to simply "poll" the player code in my
 PySimpleGUI timeout handler.
 
-## Operation
+### Operation
 
 ![App Operation](./images/tardis-show.png)
 The application is very straight-forward. The buttons will: switch to the previous track,
@@ -50,7 +50,7 @@ normal desktop level; all lower values are quieter than normal.
 
 Clicking on "Demo Mode" will cause the tracks to play continuously in succession.
 
-## The code
+### The code
 
 This code requires the Python packages listed in the `requirements.txt` file. It also
 requires that the VLC Media Player application be installed on your machine.
@@ -76,12 +76,13 @@ The results, as well as a number of hacky scripts to "auto-generate" some files,
 not included in the repository. References to an "./imagery" folder in test secitons
 of code may still be present.
 
-## Credits
+### Credits
 
 Beside the afore-mentioned Python packages, I made of use:
 
 - subpng.com/png-24lvw3 - app icon
 - subpng.com/png-6zn8ai - full TARDIS image
+- subpng.com/png-fv1r47 - weeping angel (blink and you'll miss it)
 - acegif.com/wp-content/gifs/fire-102.gif - flames animation
 - PySimpleGUI ButtonGraphics - control buttons
 

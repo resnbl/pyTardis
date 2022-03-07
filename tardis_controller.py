@@ -6,7 +6,7 @@ Most of the methods here implement GUI widget events.
 import sys
 
 import PySimpleGUI as sg
-from tracks import TRACKS
+from tracks import TRACKS, CLOSE_EFFECT
 from audio_player import AudioPlayer
 from video_player import VideoPlayer
 
@@ -55,7 +55,7 @@ class TardisController:
             return IDLE_TITLE
 
     def select_title(self, title: str):
-        """Call when ListBox item clicked"""
+        """Called when ListBox item clicked"""
         for idx, ti in enumerate(TRACKS):
             if title == ti.title:
                 self.stop()
@@ -81,3 +81,9 @@ class TardisController:
 
     def run_effects(self):
         self._video.run()
+
+    def on_close(self) -> str:
+        eff = CLOSE_EFFECT
+        self._video.start(eff.effect)
+        self._audio.play(eff.track)
+        return eff.title

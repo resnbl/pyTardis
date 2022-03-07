@@ -130,4 +130,7 @@ dmypy.json
 
 # PyCharm IDE
 .idea
+
+# my junk
 imagery/
+tardis.sh
