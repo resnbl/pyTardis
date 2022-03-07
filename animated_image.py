@@ -86,8 +86,6 @@ class AnimatedImage:
                 self.durations.append(int(frame.info.get('duration', 0)))
 
         self.frame_cnt = len(self.frames)
-        if self.frame_cnt == 1:
-            print(f'Warning: {filename.name} is not an animated image')
         self.has_default = self.frame_cnt > 1 and self.durations[0] == 0
         self.name = filename.stem
         # print(f'"{self.name}" frames={self.frame_cnt} fade={self.fade_frame}')
@@ -105,7 +103,7 @@ class AnimatedImage:
 
     def run(self):
         """Call this during Window event loop to cause animation to occur"""
-        if self.running:
+        if self.running and self.frame_cnt > 1:
             now = millis()
             if (now - self.timer) < self.durations[self.curr_frame]:
                 return      # display no cine before it's time

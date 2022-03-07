@@ -3,6 +3,7 @@ Main TARDIS script - see README.MD for an overview of how and why this exists.
 """
 __version__ = '1.0.0'
 
+import sys
 from pathlib import Path
 import base64
 import PySimpleGUI as sg
@@ -12,7 +13,7 @@ from animated_image import AnimatedImage
 eprint = print                                      # or the other
 
 sg.theme('Tan Blue')
-THE_FONT = ('Gill Sans', 17)    # ('Lato', 15) is nice, also    # ('Any', 15) # noqa
+TRY_FONTS = [('Gill Sans', 17), ('Lato', 15), ('Any', 15)]
 
 # Where all the pretty pictures are:
 IMAGES = Path(__file__).parent / 'images'
@@ -98,8 +99,9 @@ def main():
     """Main program with event loop"""
     tc = TardisController(AUDIO, IMAGES)
     # init our window
+    the_font = pick_a_font(TRY_FONTS)
     layout = make_layout(tc.titles)
-    window = sg.Window(title=IDLE_TITLE, layout=layout, font=THE_FONT, icon=TARDIS_ICON, finalize=True)
+    window = sg.Window(title=IDLE_TITLE, layout=layout, font=the_font, icon=TARDIS_ICON, finalize=True)
     track_list = window[LIST_KEY]
     play_btn = window[PLAY_KEY]
     prog_bar = window[PB_KEY]
@@ -119,11 +121,13 @@ def main():
             if is_playing:                  # it was playing...
                 if tc.is_playing:           # but is it still?
                     tc.run_effects()        # yes: continue animations
+                    # update progress only if needed
                     if progress != tc.progress:
                         progress = tc.progress
                         prog_bar.update(current_count=progress)
-                else:   # track ended since last event loop; queue STOP button
-                    window.write_event_value(PLAY_KEY, None)
+
+                else:                       # no: track ended since last event loop
+                    window.write_event_value(PLAY_KEY, None)        # queue STOP button
 
             elif is_demo_mode:          # not playing: auto-play next track?
                 tc.select_next()
@@ -174,7 +178,7 @@ def main():
             if is_demo_mode and not is_playing:
                 window.write_event_value(PLAY_KEY, None)    # queue PLAY button
 
-        elif event == sg.WINDOW_CLOSED or event == EXIT_KEY or event is None:
+        elif event in (sg.WINDOW_CLOSED, EXIT_KEY):
             tc.stop()
             break
         else:
@@ -199,6 +203,33 @@ def main():
     # print("Time's up!")
 
 
+def pick_a_font(font_specs: list[tuple]) -> tuple:
+    """Return first font spec (name, size[, style]) recognized by tkinter"""
+    font_list = sg.Text.fonts_installed_list()
+    font = None
+    for spec in font_specs:
+        if spec[0] in font_list:
+            font = spec             # matched: use it
+            break
+    else:
+        # Specify ('Any', NN) as last list item to settle for a particular size
+        if font_specs[-1][0] in ['Any', None]:
+            font = font_specs[-1]
+        else:
+            font = sg.DEFAULT_FONT
+
+    # print('Using font:', font[0], font[1])
+    return font
+
+
 if __name__ == '__main__':
-    # print('Tardis', __version__)
+    if '-v' in sys.argv:        # just like the big kids do...
+        print('Tardis', __version__)
+        print(f'  {sg.port} {sg.version}')
+        from PIL import __version__ as pil_version
+        print(f'  PIL {pil_version}')
+        from vlc import __version__ as vlc_version
+        print(f'  VLC  {vlc_version}')
+        exit()
+
     main()
