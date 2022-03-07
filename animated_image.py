@@ -41,7 +41,7 @@ class AnimatedImage:
         """
         Initialization:
         :param image: PSG.Image to be animated (must have finalized the Window beforehand)
-        :param filename: path to .png file
+        :param filename: path to .png file (can be loaded later)
         """
         self.pic = image
         self.save_image = self.pic.Widget.image         # noqa # save existing image

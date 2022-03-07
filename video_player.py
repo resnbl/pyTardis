@@ -33,17 +33,20 @@ effects = {
 
 
 class VideoPlayer:
+    """Handle GUI Image animations"""
     def __init__(self, images_folder: Path):
+        """Init with the location of our animations."""
         self._folder = images_folder
         self._beacon_ani: AnimatedImage | None = None
         self._box_ani: AnimatedImage | None = None
 
     def init(self, beacon: sg.Image, box: sg.Image):
-        """Initialization must be defered until window widgets are defined"""
+        """Image initialization must be deferred until window widgets are defined"""
         self._beacon_ani = AnimatedImage(beacon)
         self._box_ani = AnimatedImage(box)
 
     def start(self, effect_name: str):
+        """Load and display first image of animation."""
         box_file, beacon_speed = effects.get(effect_name, (None, None))
 
         if beacon_speed:
@@ -55,9 +58,11 @@ class VideoPlayer:
             self._box_ani.load(file_path).start()
 
     def run(self):
+        """Step our aminations along"""
         self._beacon_ani.run()
         self._box_ani.run()
 
     def stop(self):
+        """Stop animating and restore original (static) image"""
         self._beacon_ani.stop()
         self._box_ani.stop()

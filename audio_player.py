@@ -15,10 +15,10 @@ This class expects audio files to be laid out as:
 
 This naming convention is based on earlier work not really necessary here.
 """
+import sys
 from pathlib import Path
 from time import sleep
 from vlc import MediaPlayer, State      # State is a pseudo-Enum which can't be type checked(?)
-from timed_print import elapsed_print as eprint
 
 
 class AudioPlayer:
@@ -63,7 +63,7 @@ class AudioPlayer:
         file_glob = f'{track_num:03d}*.*'
         file = next(self._folder.glob(file_glob), None)       # use 1st (only?) matching file
         if not file:
-            eprint(f'Audio track not found: {self._folder}/{file_glob}')
+            print(f'Audio track not found: {self._folder}/{file_glob}', file=sys.stderr)
             return 0
 
         # Create a new player for each audio track

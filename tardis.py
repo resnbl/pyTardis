@@ -12,7 +12,7 @@ from animated_image import AnimatedImage
 eprint = print                                      # or the other
 
 sg.theme('Tan Blue')
-THE_FONT = ('Gill Sans', 17)    # ('Lato', 15) is nice, also    # ('Any', 15)
+THE_FONT = ('Gill Sans', 17)    # ('Lato', 15) is nice, also    # ('Any', 15) # noqa
 
 # Where all the pretty pictures are:
 IMAGES = Path(__file__).parent / 'images'
@@ -49,7 +49,7 @@ PBAR_COLOR = (sg.theme_button_color()[1], sg.theme_background_color())
 DEF_LR, DEF_TB = 5, 3           # default sg.Image padding
 PAD_NO_BTM = (DEF_LR, (DEF_TB, 0))
 PAD_NO_TOP = (DEF_LR, (0, DEF_TB))
-# PAD_NO_VERT = (DEF_LR, 0)     # for the "completists"
+# PAD_NO_VERT = (DEF_LR, 0)     # for the "complete-ists"
 
 
 def make_layout(names: list[str]) -> list[list]:
@@ -195,9 +195,9 @@ def main():
             ani_exit.run()
 
     window.close()
-    eprint("Time's up!")
+    # print("Time's up!")
 
 
 if __name__ == '__main__':
-    print('Tardis', __version__)
+    # print('Tardis', __version__)
     main()

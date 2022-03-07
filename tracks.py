@@ -8,7 +8,8 @@ class TrackInfo:
     Track descriptor
 
     This structure associates a track "index" with an audio file and
-    the animations to be displayed.
+    the animations to be displayed. Again, this is a hold-over from
+    my Arduino code.
     """
     track: int = 0      # audio file prefix (-> "001_xxx.mp3", etc.)
     title: str = ''     # title (not filename)

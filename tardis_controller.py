@@ -1,6 +1,10 @@
 """
 This class controls the Tardis audio and animations.
+
+Most of the methods here implement GUI widget events.
 """
+import sys
+
 import PySimpleGUI as sg
 from tracks import TRACKS
 from audio_player import AudioPlayer
@@ -17,7 +21,7 @@ class TardisController:
         self._trk_idx = 0
         self._audio = AudioPlayer(audio_path)
         self._video = VideoPlayer(images_path)
-        self.duration = 0
+        self.duration = 0       # cache track duration value
 
     def set_images(self, beacon: sg.Image, box: sg.Image):
         """Do animation initialization after window widgets are defined"""
@@ -25,6 +29,7 @@ class TardisController:
 
     @property
     def titles(self) -> list[str]:
+        """Get track list titles for ListBox"""
         return [ti.title for ti in TRACKS]
 
     @property
@@ -50,13 +55,14 @@ class TardisController:
             return IDLE_TITLE
 
     def select_title(self, title: str):
+        """Call when ListBox item clicked"""
         for idx, ti in enumerate(TRACKS):
             if title == ti.title:
                 self.stop()
                 self._trk_idx = idx
                 break
         else:
-            print(f'Title "{title}" not found')
+            print(f'Title "{title}" not found', file=sys.stderr)
 
     def select_prev(self):
         self.stop()
