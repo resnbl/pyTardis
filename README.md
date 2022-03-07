@@ -12,7 +12,7 @@ several packages to:
 
 - Display a GUI (`PySimpleGUI`)
 - Create and display animated images (`Pillow`)
-- Play sounds (`python-vlc`)
+- Play sounds (`python-vlc`) [_requires VLC app be installed_]
 - package it all up for publication (GitHub, MarkDown)
 
 I had already written several utilities for myself with minimal UIs using PySimpleGUI (and
@@ -45,7 +45,7 @@ play the curren track (or stop the current track if it is already playing), go t
 track, or exit the program. The track list may be clicked on to select a specific clip.
 
 The volume may be changed with the slider[^2].
-Note this is moderated by your system's sound system settings: full volume is just your
+Note this is moderated by your machine's sound system settings: full volume is just your
 normal desktop level; all lower values are quieter than normal.
 
 Clicking on "Demo Mode" will cause the tracks to play continuously in succession.
@@ -85,6 +85,10 @@ Beside the afore-mentioned Python packages, I made of use:
 - subpng.com/png-fv1r47 - weeping angel (blink and you'll miss it)
 - acegif.com/wp-content/gifs/fire-102.gif - flames animation
 - PySimpleGUI ButtonGraphics - control buttons
+
+### Don't Blink
+
+![Don't Blink](./images/tardis-exit.png)
 
 [^1]: Sydney Newman (Creator). (1963-1989, 2005-present) _Doctor Who_ [Television series]. BBC.
 
