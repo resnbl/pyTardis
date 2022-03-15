@@ -30,12 +30,11 @@ members via a subclass that overrode `Image.update_animation()`,
 but then went completely separate from it in case the implementation changes.
 
 For the audio, I investigated numerous Python sound packages. Many offered limited sound
-file format support (.wav only), blocked the GUI while playing, or couldn't stop a song while
+file format support (.wav only), blocked the GUI while playing, or couldn't interrupt a song while
 playing. The first workable package I used was `PyObjC` and `AppKit.NSSound` for macOS which
 supports a callback when a track has finished, but of course this isn't cross-platform.
 I ended up using the `python-vlc` package since I already had
-the VLC player installed on my machine, and was able to simply "poll" the player code in my
-PySimpleGUI timeout handler.
+the VLC player installed on my machine, and implemented the "playback complete" callback it provides.
 
 ### Operation
 
