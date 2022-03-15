@@ -51,7 +51,7 @@ class TardisController:
         if self.duration:
             self._video.start(ti.effect)
             dur_secs = self.duration / 1000
-            return f'{TRACKS[self._trk_idx].title}: {dur_secs:.1f}'
+            return f'{TRACKS[self._trk_idx].title} ({dur_secs:.1f})'
         else:
             return IDLE_TITLE
 
