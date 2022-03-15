@@ -39,6 +39,7 @@ VOL_KEY = '-VOL-'
 PB_KEY = '-PB-'
 BEACON_KEY = '-BEACON-'
 BOX_KEY = '-BOX-'
+PBD_KEY = '-PLAYBACK_DONE-'
 EXIT_KEY = '-EXIT-'
 TIMEOUT_KEY = sg.TIMEOUT_KEY
 
@@ -99,14 +100,14 @@ def main():
     """Main program with event loop"""
     tc = TardisController(AUDIO, IMAGES)
     # init our window
-    the_font = pick_a_font(TRY_FONTS)
+    the_font = TRY_FONTS[0]             # don't use pick_a_font()
     layout = make_layout(tc.titles)
     window = sg.Window(title=IDLE_TITLE, layout=layout, font=the_font, icon=TARDIS_ICON, finalize=True)
     track_list = window[LIST_KEY]
     play_btn = window[PLAY_KEY]
     prog_bar = window[PB_KEY]
     progress = 0
-    tc.set_images(window[BEACON_KEY], window[BOX_KEY])
+    tc.init_window(window, BEACON_KEY, BOX_KEY, PBD_KEY)
     # Demo our fancy animated buttons
     ani_next = AnimatedImage(window[NEXT_KEY], NEXT_BTN)
     ani_prev = AnimatedImage(window[PREV_KEY], PREV_BTN)
@@ -119,21 +120,19 @@ def main():
 
         if event == TIMEOUT_KEY:        # check the most frequent event first
             if is_playing:                  # it was playing...
-                if tc.is_playing:           # but is it still?
-                    tc.run_effects()        # yes: continue animations
-                    # update progress only if needed
-                    if progress != tc.progress:
-                        progress = tc.progress
-                        prog_bar.update(current_count=progress)
-
-                else:                       # no: track ended since last event loop
-                    window.write_event_value(PLAY_KEY, None)        # queue STOP button
+                tc.run_effects()            # yes: continue animations
+                # update progress only if needed
+                curr_prog = tc.progress
+                if curr_prog - progress >= 2:   # only bump for "significant" progress
+                    progress = curr_prog
+                    prog_bar.update(current_count=progress)
 
             elif is_demo_mode:          # not playing: auto-play next track?
                 tc.select_next()
                 is_playing = False
                 window.write_event_value(PLAY_KEY, None)    # queue PLAY button
 
+            # Animated buttons seldom run, but here is their chance to shine:
             ani_next.run()
             ani_prev.run()
 
@@ -142,7 +141,8 @@ def main():
                 tc.stop()
                 window.set_title(IDLE_TITLE)
                 play_btn.update(image_filename=PLAY_BTN)    # toggle stop -> play
-                prog_bar.update(current_count=0)
+                progress = 0
+                prog_bar.update(current_count=progress)
                 is_playing = False
             else:               # then get started!
                 title_duration = tc.play()
@@ -154,6 +154,12 @@ def main():
                 progress = 0
                 prog_bar.update(current_count=progress)
                 is_playing = True
+
+        elif event == PBD_KEY:
+            if is_demo_mode:
+                window.write_event_value(NEXT_KEY, None)    # queue NEXT button
+            else:
+                window.write_event_value(PLAY_KEY, None)    # queue STOP button
 
         elif event == LIST_KEY:
             tc.select_title(values[LIST_KEY][0])
@@ -173,10 +179,8 @@ def main():
         elif event == VOL_KEY:
             tc.set_volume(values[VOL_KEY])
 
-        elif event == DEMO_KEY:     # toggle "play all" mode
+        elif event == DEMO_KEY:         # toggle "play all" mode
             is_demo_mode = values[DEMO_KEY]
-            if is_demo_mode and not is_playing:
-                window.write_event_value(PLAY_KEY, None)    # queue PLAY button
 
         elif event in (sg.WINDOW_CLOSED, EXIT_KEY):
             tc.stop()
@@ -201,25 +205,6 @@ def main():
 
     window.close()
     # print("Time's up!")
-
-
-def pick_a_font(font_specs: list[tuple]) -> tuple:
-    """Return first font spec (name, size[, style]) recognized by tkinter"""
-    font_list = sg.Text.fonts_installed_list()
-    font = None
-    for spec in font_specs:
-        if spec[0] in font_list:
-            font = spec             # matched: use it
-            break
-    else:
-        # Specify ('Any', NN) as last list item to settle for a particular size
-        if font_specs[-1][0] in ['Any', None]:
-            font = font_specs[-1]
-        else:
-            font = sg.DEFAULT_FONT
-
-    # print('Using font:', font[0], font[1])
-    return font
 
 
 if __name__ == '__main__':

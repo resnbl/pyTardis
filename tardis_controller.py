@@ -23,9 +23,10 @@ class TardisController:
         self._video = VideoPlayer(images_path)
         self.duration = 0       # cache track duration value
 
-    def set_images(self, beacon: sg.Image, box: sg.Image):
+    def init_window(self, window: sg.Window, beacon_key: str, box_key: str, pbd_key: str):
         """Do animation initialization after window widgets are defined"""
-        self._video.init(beacon, box)
+        self._video.init(window[beacon_key], window[box_key])
+        self._audio.init_pbd(window, pbd_key)
 
     @property
     def titles(self) -> list[str]:
